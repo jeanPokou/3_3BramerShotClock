@@ -5,7 +5,7 @@ class Header extends Component {
 
   render() {
     return (
-      <h1>HOOP IT UP</h1>
+      <h1 className="main_title"> 3 * 3 BREAMER TOURNAMENT </h1>
     );
   }
 }

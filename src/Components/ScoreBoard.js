@@ -1,16 +1,22 @@
 import React, {Component} from 'react';
 import './scoreboard.css';
-
+import edit_icon from './edit.png';
+import Timer from 'react-timer';
+import Stopwatch from './BraemerTimer.js';
+ const OPTIONS = { prefix: 'seconds elapsed!', delay: 100 };
 class ScoreBoard extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       homeScore: 0,
-      awayScore: 0
+      awayScore: 0,
+      home_team_label: "",
+      away_team_label: "",
+      team_edit_hidden: false
     }
   }
-
+  
   resetScore() {
     this.setState({homeScore: 0, awayScore: 0})
   }
@@ -66,10 +72,34 @@ class ScoreBoard extends Component {
       this.setState({awayScore: awayScore})
     }
   }
+  onHomeLabelChange = event => {
+    this.setState({home_team_label: event.target.value})
+  }
 
+  onAwayLabelChange(event) {
+    this.setState({away_team_label: event.target.value})
+  }
+  toggleHidden() {
+    this.setState({
+      team_edit_hidden: !this.state.team_edit_hidden
+    })
+  }
   render() {
     return (
       <div className="scoreboard">
+
+       {this.state.team_edit_hidden ? 
+        <input type="text" className="home_label" value={this.state.home_team_label} onChange={ (e) => this.onHomeLabelChange(e)} />: null }
+
+       {this.state.team_edit_hidden ? 
+        <input type="text" className="away_label" value={this.state.away_team_label} onChange={(e) => this.onAwayLabelChange(e)}/> : null}
+        
+         <div className="reset"> <Stopwatch /> </div>
+
+        {/* <div className="reset">
+        <Timer  options={OPTIONS} className="timer_braemer" />
+      </div> */}
+
         <div className="inner_border"></div>
         <div className="inner_rect"></div>
         <div className="rim"></div>
@@ -82,7 +112,7 @@ class ScoreBoard extends Component {
         <div className="net7"></div>
         <div className="net8"></div>
         <div className="net9"></div>
-        <h4 className="home">HOME</h4>
+    <h4 className="home">{this.state.home_team_label}</h4>
         <div className="div_line_home"></div>
         <div className="score_container_home"></div>
         <div className="score_container_home">{this.state.homeScore}</div>
@@ -92,13 +122,13 @@ class ScoreBoard extends Component {
         <div>
           <a className="add_button home2" onClick={() => this.addTwoHome()}>+2</a>
         </div>
-        <div>
+        {/* <div>
           <a className="add_button home3" onClick={() => this.addThreeHome()}>+3</a>
-        </div>
+        </div> */}
         <div>
           <a className="minus_button home-subtract1" onClick={() => this.minusOneHome()}>-1</a>
         </div>
-        <h4 className="away">AWAY</h4>
+    <h4 className="away">{this.state.away_team_label}</h4>
         <div className="div_line_away"></div>
         <div className="score_container_away">{this.state.awayScore}</div>
         <div>
@@ -107,13 +137,18 @@ class ScoreBoard extends Component {
         <div>
           <a className="add_button away2" onClick={() => this.addTwoAway()}>+2</a>
         </div>
-        <div>
+        {/* <div>
           <a className="add_button away3" onClick={() => this.addThreeAway()}>+3</a>
-        </div>
+        </div> */}
         <div>
           <a className="minus_button away-subtract2" onClick={() => this.minusOneAway()}>-1</a>
         </div>
-        <a className="reset" onClick={this.resetScore.bind(this)}>NEW GAME</a>
+
+        {/* <a className="reset" onClick={this.resetScore.bind(this)}>NEW GAME</a> */}
+
+        <a className="edit_team" onClick={this.resetScore.bind(this)}>
+          <img src={edit_icon} className="edit_team_image" onClick={ ()=> this.toggleHidden()}/>
+        </a>
       </div>
     );
   }
